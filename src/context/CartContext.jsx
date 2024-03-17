@@ -1,13 +1,16 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import { sumProducts } from "../helper/helper";
 
 const CartContext = createContext();
-const initialState = {
+
+const getLocalstorageData = JSON.parse(localStorage.getItem("data")) || {
   selectedItem: [],
   itemsCounter: 0,
   total: 0,
   checkOut: false,
 };
+
+const initialState = getLocalstorageData;
 const reducer = (state, action) => {
   switch (action.type) {
     case "ADD_ITEM":
@@ -60,6 +63,11 @@ const reducer = (state, action) => {
 
 function CartProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    window.localStorage.setItem("data", JSON.stringify(state));
+  }, [state]);
+
   return (
     <CartContext.Provider value={{ state, dispatch }}>
       {children}
