@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
+import { useEffect } from "react";
 // import { useCart } from "../context/CartContext";
 
 import styles from "../layout/Layout.module.css";
@@ -8,6 +9,11 @@ import styles from "../layout/Layout.module.css";
 function Layout({ children }) {
   // const [state] = useCart();
   const state = useSelector((store) => store.cart);
+
+  useEffect(() => {
+    window.localStorage.setItem("data", JSON.stringify(state));
+  }, [state]);
+
   return (
     <>
       <header className={styles.header}>
